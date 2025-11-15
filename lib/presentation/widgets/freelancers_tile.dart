@@ -1,29 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:freelancer_flutter_ui/core/utils/responsive.dart';
+import 'package:freelancer_flutter_ui/data/models/freelancer_dto.dart';
 
-class ProfileCard extends StatelessWidget {
-  final String name;
-  final String profession;
-  final String location;
-  final double rating;
-  final int reviewsCount;
-  final double hourlyRate;
-  final String profileImageUrl;
+class FreelancersTile extends StatelessWidget {
   final List<String> skills;
   final bool isPro;
   final bool isVerified;
+  final FreelancerData freelancer;
 
-  const ProfileCard({
+  const FreelancersTile({
     super.key,
-    required this.name,
-    required this.profession,
-    required this.location,
-    required this.rating,
-    required this.reviewsCount,
-    required this.hourlyRate,
-    required this.profileImageUrl,
-    required this.skills,
+    this.skills = const ["Flutter", "Dart"],
     required this.isPro,
+    required this.freelancer,
     this.isVerified = true,
   });
 
@@ -57,8 +46,8 @@ class ProfileCard extends StatelessWidget {
                     // Profile Image
                     ClipRRect(
                       borderRadius: BorderRadius.circular(40),
-                      child: Image.asset(
-                        profileImageUrl,
+                      child: Image.network(
+                        freelancer.imageUrl ?? "assets/images/avatar.png",
                         width: 45,
                         height: 45,
                         fit: BoxFit.cover,
@@ -76,7 +65,7 @@ class ProfileCard extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                name,
+                                freelancer.name,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -91,12 +80,12 @@ class ProfileCard extends StatelessWidget {
                                 ),
                             ],
                           ),
-                          // Use Align to position profession at the bottom
+
                           Align(
                             alignment: Alignment
                                 .bottomLeft, // Align it to the bottom of the Column
                             child: Text(
-                              profession,
+                              freelancer.title ?? "Flutter Developer",
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey.shade600,
@@ -110,7 +99,7 @@ class ProfileCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
 
-                /// ---------------------- SKILLS -----------------------
+                /// SKILLS
                 Row(
                   children: [
                     ...skillDisplay.map(
@@ -167,7 +156,7 @@ class ProfileCard extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      "$rating ($reviewsCount reviews)",
+                      "${freelancer.statistics.averageRating?.toStringAsFixed(1) ?? 0.0} (${freelancer.statistics.totalReviews} reviews)",
                       style: const TextStyle(fontSize: 13),
                     ),
                   ],
@@ -193,7 +182,7 @@ class ProfileCard extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      location,
+                      "${freelancer.location.state}, ${freelancer.location.country}",
                       style: const TextStyle(fontSize: 13),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -219,7 +208,7 @@ class ProfileCard extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      "\$${hourlyRate.toStringAsFixed(2)}/hr",
+                      "\$${freelancer.hourly_rate.toStringAsFixed(2)}/hr",
                       style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,

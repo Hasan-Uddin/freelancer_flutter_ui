@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PopularServiceProvider>().loadPopularServices();
+      context.read<PopularServiceProvider>().fetchPopularServices();
     });
   }
 
@@ -329,39 +329,39 @@ class _HomeScreenState extends State<HomeScreen> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: const [
-                            ProfileCard(
-                              name: 'Esther Howard',
-                              profession: 'Flutter Developer',
-                              location: 'New York, USA',
-                              rating: 4.5,
-                              reviewsCount: 125,
-                              hourlyRate: 50,
-                              profileImageUrl: 'assets/images/avatar.png',
-                              skills: ["Flutter", "Dart", "Firebase"],
-                              isPro: true,
-                            ),
-                            ProfileCard(
-                              name: 'Esther Howard',
-                              profession: 'Flutter Developer',
-                              location: 'New York, USA',
-                              rating: 4.5,
-                              reviewsCount: 125,
-                              hourlyRate: 50,
-                              profileImageUrl: 'assets/images/avatar.png',
-                              skills: ["Flutter", "Dart", "Firebase"],
-                              isPro: true,
-                            ),
-                            ProfileCard(
-                              name: 'Esther Howard',
-                              profession: 'Flutter Developer',
-                              location: 'New York, USA',
-                              rating: 4.5,
-                              reviewsCount: 125,
-                              hourlyRate: 50,
-                              profileImageUrl: 'assets/images/avatar.png',
-                              skills: ["Flutter", "Dart", "Firebase"],
-                              isPro: true,
-                            ),
+                            // FreelancersTile(
+                            //   name: 'Esther Howard',
+                            //   profession: 'Flutter Developer',
+                            //   location: 'New York, USA',
+                            //   rating: 4.5,
+                            //   reviewsCount: 125,
+                            //   hourlyRate: 50,
+                            //   profileImageUrl: 'assets/images/avatar.png',
+                            //   skills: ["Flutter", "Dart", "Firebase"],
+                            //   isPro: true,
+                            // ),
+                            // FreelancersTile(
+                            //   name: 'Esther Howard',
+                            //   profession: 'Flutter Developer',
+                            //   location: 'New York, USA',
+                            //   rating: 4.5,
+                            //   reviewsCount: 125,
+                            //   hourlyRate: 50,
+                            //   profileImageUrl: 'assets/images/avatar.png',
+                            //   skills: ["Flutter", "Dart", "Firebase"],
+                            //   isPro: true,
+                            // ),
+                            // FreelancersTile(
+                            //   name: 'Esther Howard',
+                            //   profession: 'Flutter Developer',
+                            //   location: 'New York, USA',
+                            //   rating: 4.5,
+                            //   reviewsCount: 125,
+                            //   hourlyRate: 50,
+                            //   profileImageUrl: 'assets/images/avatar.png',
+                            //   skills: ["Flutter", "Dart", "Firebase"],
+                            //   isPro: true,
+                            // ),
                           ],
                         ),
                       );

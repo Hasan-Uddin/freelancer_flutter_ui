@@ -8,7 +8,7 @@ class PopularServiceApi {
       'https://xilancer.xgenious.com/api/v1/projects/popular';
 
   // Fetch projects
-  Future<List<PopularServices>> fetchData() async {
+  Future<List<PopularServicesData>> fetchData() async {
     try {
       final response = await http.get(Uri.parse(_baseUrl));
 
@@ -22,7 +22,7 @@ class PopularServiceApi {
 
           // Convert each project into a Project model and return
           return popularServicesList
-              .map((e) => PopularServices.fromJson(e))
+              .map((e) => PopularServicesData.fromJson(e))
               .toList();
         } else {
           throw Exception('Failed to load projects');

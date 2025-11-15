@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:freelancer_flutter_ui/data/api_services/frelancers_api.dart';
+import 'package:freelancer_flutter_ui/domain/providers/freelancer_provider.dart';
 import 'package:freelancer_flutter_ui/domain/providers/popular_services_provider.dart';
-import 'package:freelancer_flutter_ui/presentation/widgets/popular_service_tile.dart';
+import 'package:freelancer_flutter_ui/presentation/widgets/freelancers_tile.dart';
 import 'package:provider/provider.dart';
 import 'core/themes/app_theme.dart';
 import 'presentation/screens/home_screen.dart';
@@ -16,6 +18,7 @@ void main() {
       providers: [
         //ChangeNotifierProvider(create: (_) => HomeProvider()),
         ChangeNotifierProvider(create: (_) => PopularServiceProvider()),
+        ChangeNotifierProvider(create: (_) => FreelancerProvider()),
       ],
       child: const FreelancerApp(),
     ),
@@ -31,12 +34,37 @@ class FreelancerApp extends StatefulWidget {
 
 class _FreelancerAppState extends State<FreelancerApp> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PopularServiceProvider>().fetchPopularServices();
+      context.read<FreelancerProvider>().fetchFreelancers();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final provider = context.watch<FreelancerProvider>();
     return MaterialApp(
       title: 'Freelance Scaffold',
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      home: Material(child: HomeScreen()),
+      home: Material(
+        child: SizedBox(
+          height: 372,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: provider.freelancers.length,
+            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            itemBuilder: (context, index) {
+              return FreelancersTile(
+                isPro: true,
+                freelancer: provider.freelancers[index],
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 }

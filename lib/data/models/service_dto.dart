@@ -1,4 +1,4 @@
-class PopularServices {
+class PopularServicesData {
   final int id;
   final String title;
   final String slug;
@@ -11,7 +11,7 @@ class PopularServices {
   final Freelancer freelancer;
   final Category category;
 
-  PopularServices({
+  PopularServicesData({
     required this.id,
     required this.title,
     required this.slug,
@@ -25,8 +25,8 @@ class PopularServices {
     required this.category,
   });
 
-  factory PopularServices.fromJson(Map<String, dynamic> json) {
-    return PopularServices(
+  factory PopularServicesData.fromJson(Map<String, dynamic> json) {
+    return PopularServicesData(
       id: json['id'],
       title: json['title'],
       slug: json['slug'],
