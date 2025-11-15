@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:freelancer_flutter_ui/core/utils/responsive.dart';
+import 'package:freelancer_flutter_ui/domain/providers/freelancer_provider.dart';
+import 'package:freelancer_flutter_ui/domain/providers/popular_services_provider.dart';
 import 'package:freelancer_flutter_ui/presentation/widgets/category_tile.dart';
 import 'package:freelancer_flutter_ui/presentation/widgets/job_tile.dart';
-import 'package:freelancer_flutter_ui/presentation/widgets/profile_tile.dart';
+import 'package:freelancer_flutter_ui/presentation/widgets/freelancer_tile.dart';
 import 'package:freelancer_flutter_ui/presentation/widgets/promo_banner.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants.dart';
-import '../../domain/providers/home_provider.dart';
-import '../widgets/service_card.dart';
+import '../widgets/popular_service_tile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,12 +20,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   final _searchController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PopularServiceProvider>().fetchPopularServices();
+      context.read<FreelancerProvider>().fetchFreelancers();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<HomeProvider>();
-    final services = provider.services;
-    final freelancers = provider.freelancers;
+    final popularServiceProvider = context.watch<PopularServiceProvider>();
+    final freelancerProfileProvider = context.watch<FreelancerProvider>();
 
     return Scaffold(
       body: SafeArea(
@@ -170,35 +178,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 12),
 
-                  // Popular services list (horizontal)
-                  // SizedBox(
-                  //   height: Responsive.scaleWidth(context, 220),
-                  //   child: ListView.separated(
-                  //     scrollDirection: Axis.horizontal,
-                  //     itemCount: services.length,
-                  //     separatorBuilder: (_, _) => const SizedBox(width: 12),
-                  //     itemBuilder: (ctx, i) {
-                  //       return ServiceCard(service: services[i]);
-                  //     },
-                  //   ),
-                  // ),
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      return SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: const [
-                            ServiceCard(),
-                            ServiceCard(),
-                            ServiceCard(),
-                            ServiceCard(),
-                          ],
-                        ),
-                      );
-                    },
+                  SizedBox(
+                    height: 372,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: popularServiceProvider.servicesData.length,
+                      separatorBuilder: (_, __) => const SizedBox(width: 12),
+                      itemBuilder: (context, index) {
+                        return PopularServicesTile(
+                          services: popularServiceProvider.servicesData[index],
+                        );
+                      },
+                    ),
                   ),
-
-                  const SizedBox(height: 14),
 
                   // Recent Jobs header and list (compact)
                   const SizedBox(height: 16),
@@ -292,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       Text(
-                        'Popular Services',
+                        'Top Rated Freelancers',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -306,79 +298,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
 
                   const SizedBox(height: 12),
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      return SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: const [
-                            ProfileCard(
-                              name: 'Esther Howard',
-                              profession: 'Flutter Developer',
-                              location: 'New York, USA',
-                              rating: 4.5,
-                              reviewsCount: 125,
-                              hourlyRate: 50,
-                              profileImageUrl: 'assets/images/avatar.png',
-                              skills: ["Flutter", "Dart", "Firebase"],
-                              isPro: true,
-                            ),
-                            ProfileCard(
-                              name: 'Esther Howard',
-                              profession: 'Flutter Developer',
-                              location: 'New York, USA',
-                              rating: 4.5,
-                              reviewsCount: 125,
-                              hourlyRate: 50,
-                              profileImageUrl: 'assets/images/avatar.png',
-                              skills: ["Flutter", "Dart", "Firebase"],
-                              isPro: true,
-                            ),
-                            ProfileCard(
-                              name: 'Esther Howard',
-                              profession: 'Flutter Developer',
-                              location: 'New York, USA',
-                              rating: 4.5,
-                              reviewsCount: 125,
-                              hourlyRate: 50,
-                              profileImageUrl: 'assets/images/avatar.png',
-                              skills: ["Flutter", "Dart", "Firebase"],
-                              isPro: true,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                  SizedBox(
+                    height: 217,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: freelancerProfileProvider.freelancers.length,
+                      separatorBuilder: (_, __) => const SizedBox(width: 12),
+                      itemBuilder: (context, index) {
+                        return FreelancersTile(
+                          isPro: true,
+                          freelancer:
+                              freelancerProfileProvider.freelancers[index],
+                        );
+                      },
+                    ),
                   ),
 
-                  const SizedBox(height: 12),
-                  // ListView(
-                  //   children: [
-                  //     JobTile(
-                  //       title: 'Logo Design for Business Loan Brokerage',
-                  //       timeAgo: '2 years ago',
-                  //       price: 126,
-                  //     ),
-                  //     JobTile(
-                  //       title: 'Logo Design for Business Loan Brokerage',
-                  //       timeAgo: '1 week ago',
-                  //       price: 126,
-                  //     ),
-                  //     JobTile(
-                  //       title: 'Logo Design for Business Loan Brokerage',
-                  //       timeAgo: '5 months ago',
-                  //       price: 126,
-                  //     ),
-                  //     const SizedBox(height: 8),
-                  //     const Text(
-                  //       'Top Rated Freelancers',
-                  //       style: TextStyle(fontWeight: FontWeight.w600),
-                  //     ),
-                  //     ...freelancers
-                  //         .map((f) => FreelancerTile(freelancer: f))
-                  //         .toList(),
-                  //   ],
-                  // ),
+                  const SizedBox(height: 14),
                 ],
               ),
             ),
