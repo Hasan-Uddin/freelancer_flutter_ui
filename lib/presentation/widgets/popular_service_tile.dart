@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:freelancer_flutter_ui/core/utils/responsive.dart';
-import '../../data/models/service_model.dart';
+import 'package:freelancer_flutter_ui/data/models/service_dto.dart';
 import '../../core/constants.dart';
 
-class ServiceCard extends StatelessWidget {
+class PopularServicesTile extends StatelessWidget {
   //final ServiceModel service;
-  const ServiceCard({super.key});
+  final PopularServices services;
+  const PopularServicesTile({super.key, required this.services});
 
   @override
   Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(
-      Responsive.scaleWidth(context, 20),
-    );
+    final borderRadius = BorderRadius.circular(20);
+
+    final rating = services.statistics.averageRating ?? 0.0;
+    final reviews = services.statistics.totalReviews;
+    final price = services.basicPrice.regular;
+
     return Container(
-      width: Responsive.scaleWidth(context, 302),
+      width: Responsive.scaleWidth(context, 346),
+      margin: EdgeInsets.all(1),
       //height: Responsive.scaleWidth(context, 346),
-      margin: EdgeInsets.only(
-        right: Responsive.scaleWidth(context, 10),
-        top: Responsive.scaleWidth(context, 10),
-        bottom: Responsive.scaleWidth(context, 10),
-      ),
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -33,18 +33,17 @@ class ServiceCard extends StatelessWidget {
         ],
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // image + overlays
           Stack(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(Responsive.scaleWidth(context, 12)),
-                ),
-                child: Image.asset(
-                  "assets/images/avatar.png",
-                  height: Responsive.scaleWidth(context, 172),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                child: Image.network(
+                  services.image,
+                  height: 172,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
@@ -84,31 +83,33 @@ class ServiceCard extends StatelessWidget {
                 ),
               ),
               // Sponsored pill (top-right)
-              Positioned(
-                left: 12,
-                top: 12,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(160, 255, 255, 255),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Text(
-                    'Sponsored',
-                    style: TextStyle(color: Colors.black, fontSize: 13),
+              if (!services.isPromoted) // no true in the api endpoint
+                Positioned(
+                  left: 12,
+                  top: 12,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(160, 255, 255, 255),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Text(
+                      'Sponsored',
+                      style: TextStyle(color: Colors.black, fontSize: 13),
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
 
           // content
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 14),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // rating + reviews + level
@@ -117,7 +118,10 @@ class ServiceCard extends StatelessWidget {
                     const Icon(Icons.star_border, size: 20),
                     const SizedBox(width: 6),
 
-                    Text('4.5 (13 Reviews)', style: TextStyle(fontSize: 14)),
+                    Text(
+                      '${rating.toStringAsFixed(1)} ($reviews Reviews)',
+                      style: TextStyle(fontSize: 14),
+                    ),
 
                     const Spacer(),
 
@@ -125,8 +129,8 @@ class ServiceCard extends StatelessWidget {
                       children: [
                         const SizedBox(width: 4),
                         const Text('Level ', style: TextStyle(fontSize: 14)),
-                        const Text(
-                          '• 2',
+                        Text(
+                          '• ${services.freelancer.freelancerLevel}',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -139,15 +143,19 @@ class ServiceCard extends StatelessWidget {
 
                 const SizedBox(height: 8),
                 // Subtitle / short meta
-                Text(
-                  "I will do, and this for you, hire me",
-                  style: TextStyle(
-                    color: Color(0xFF1C2431),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                Container(
+                  height: 55,
+                  child: Text(
+                    services.title ?? "this is title",
+                    style: TextStyle(
+                      color: Color(0xFF1C2431),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
+
                 Container(
                   height: 2,
                   width: double.infinity,
@@ -158,13 +166,11 @@ class ServiceCard extends StatelessWidget {
                 // price
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 16,
+                    horizontal: 15,
+                    vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(
-                      0xFFF3F5F7,
-                    ), // light grey like in the image
+                    color: const Color(0xFFF3F5F7),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -179,7 +185,7 @@ class ServiceCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "\$126",
+                        "\$$price",
                         style: const TextStyle(
                           color: Color(0xFF1C2431), // dark text color
                           fontSize: 20,

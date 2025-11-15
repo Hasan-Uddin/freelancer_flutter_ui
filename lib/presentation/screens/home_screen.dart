@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:freelancer_flutter_ui/core/utils/responsive.dart';
+import 'package:freelancer_flutter_ui/domain/providers/popular_services_provider.dart';
 import 'package:freelancer_flutter_ui/presentation/widgets/category_tile.dart';
 import 'package:freelancer_flutter_ui/presentation/widgets/job_tile.dart';
-import 'package:freelancer_flutter_ui/presentation/widgets/profile_tile.dart';
+import 'package:freelancer_flutter_ui/presentation/widgets/freelancers_tile.dart';
 import 'package:freelancer_flutter_ui/presentation/widgets/promo_banner.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../domain/providers/home_provider.dart';
-import '../widgets/service_card.dart';
+import '../widgets/popular_service_tile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,12 +20,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   final _searchController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PopularServiceProvider>().loadPopularServices();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<HomeProvider>();
-    final services = provider.services;
-    final freelancers = provider.freelancers;
+    final provider = context.watch<PopularServiceProvider>();
 
     return Scaffold(
       body: SafeArea(
@@ -182,23 +188,34 @@ class _HomeScreenState extends State<HomeScreen> {
                   //     },
                   //   ),
                   // ),
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      return SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: const [
-                            ServiceCard(),
-                            ServiceCard(),
-                            ServiceCard(),
-                            ServiceCard(),
-                          ],
-                        ),
-                      );
-                    },
+                  // LayoutBuilder(
+                  //   builder: (context, constraints) {
+                  //     return SingleChildScrollView(
+                  //       scrollDirection: Axis.horizontal,
+                  //       child: Row(
+                  //         children: const [
+                  //           PopularServicesTile(),
+                  //           PopularServicesTile(),
+                  //           PopularServicesTile(),
+                  //           PopularServicesTile(),
+                  //         ],
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+                  SizedBox(
+                    height: 372,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: provider.servicesData.length,
+                      separatorBuilder: (_, __) => const SizedBox(width: 12),
+                      itemBuilder: (context, index) {
+                        return PopularServicesTile(
+                          services: provider.servicesData[index],
+                        );
+                      },
+                    ),
                   ),
-
-                  const SizedBox(height: 14),
 
                   // Recent Jobs header and list (compact)
                   const SizedBox(height: 16),

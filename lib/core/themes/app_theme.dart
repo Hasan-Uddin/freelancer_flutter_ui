@@ -18,7 +18,10 @@ class AppTheme {
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
     ),
-    textTheme: GoogleFonts.poppinsTextTheme(),
+    textTheme: GoogleFonts.poppinsTextTheme().apply(
+      bodyColor: Colors.black87,
+      displayColor: Colors.black87,
+    ),
     useMaterial3: true,
   );
 }
