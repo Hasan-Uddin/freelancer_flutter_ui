@@ -130,7 +130,7 @@ class PopularServicesTile extends StatelessWidget {
                         const SizedBox(width: 4),
                         const Text('Level ', style: TextStyle(fontSize: 14)),
                         Text(
-                          '• ${services.freelancer.freelancerLevel}',
+                          '• 2',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -149,7 +149,7 @@ class PopularServicesTile extends StatelessWidget {
                     services.title ?? "this is title",
                     style: TextStyle(
                       color: Color(0xFF1C2431),
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

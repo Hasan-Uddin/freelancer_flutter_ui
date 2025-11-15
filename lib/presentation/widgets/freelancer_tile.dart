@@ -27,11 +27,7 @@ class FreelancersTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         color: Colors.white,
       ),
-      margin: EdgeInsets.only(
-        right: Responsive.scaleWidth(context, 10),
-        top: Responsive.scaleWidth(context, 10),
-        bottom: Responsive.scaleWidth(context, 10),
-      ),
+      margin: EdgeInsets.only(right: 10, top: 10, bottom: 10),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         child: Stack(
