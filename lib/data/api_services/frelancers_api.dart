@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:freelancer_flutter_ui/data/models/freelancer_dto.dart';
-import 'package:freelancer_flutter_ui/data/models/service_dto.dart';
 import 'package:http/http.dart' as http;
 
 class FreelancerApiService {

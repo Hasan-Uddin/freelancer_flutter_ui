@@ -5,11 +5,10 @@ import 'package:freelancer_flutter_ui/domain/providers/freelancer_provider.dart'
 import 'package:freelancer_flutter_ui/domain/providers/popular_services_provider.dart';
 import 'package:freelancer_flutter_ui/presentation/widgets/category_tile.dart';
 import 'package:freelancer_flutter_ui/presentation/widgets/job_tile.dart';
-import 'package:freelancer_flutter_ui/presentation/widgets/freelancers_tile.dart';
+import 'package:freelancer_flutter_ui/presentation/widgets/freelancer_tile.dart';
 import 'package:freelancer_flutter_ui/presentation/widgets/promo_banner.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants.dart';
-import '../../domain/providers/home_provider.dart';
 import '../widgets/popular_service_tile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -179,33 +178,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 12),
 
-                  // Popular services list (horizontal)
-                  // SizedBox(
-                  //   height: Responsive.scaleWidth(context, 220),
-                  //   child: ListView.separated(
-                  //     scrollDirection: Axis.horizontal,
-                  //     itemCount: services.length,
-                  //     separatorBuilder: (_, _) => const SizedBox(width: 12),
-                  //     itemBuilder: (ctx, i) {
-                  //       return ServiceCard(service: services[i]);
-                  //     },
-                  //   ),
-                  // ),
-                  // LayoutBuilder(
-                  //   builder: (context, constraints) {
-                  //     return SingleChildScrollView(
-                  //       scrollDirection: Axis.horizontal,
-                  //       child: Row(
-                  //         children: const [
-                  //           PopularServicesTile(),
-                  //           PopularServicesTile(),
-                  //           PopularServicesTile(),
-                  //           PopularServicesTile(),
-                  //         ],
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
                   SizedBox(
                     height: 372,
                     child: ListView.separated(
@@ -312,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       Text(
-                        'Popular Services',
+                        'Top Rated Freelancers',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -342,34 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: 12),
-                  // ListView(
-                  //   children: [
-                  //     JobTile(
-                  //       title: 'Logo Design for Business Loan Brokerage',
-                  //       timeAgo: '2 years ago',
-                  //       price: 126,
-                  //     ),
-                  //     JobTile(
-                  //       title: 'Logo Design for Business Loan Brokerage',
-                  //       timeAgo: '1 week ago',
-                  //       price: 126,
-                  //     ),
-                  //     JobTile(
-                  //       title: 'Logo Design for Business Loan Brokerage',
-                  //       timeAgo: '5 months ago',
-                  //       price: 126,
-                  //     ),
-                  //     const SizedBox(height: 8),
-                  //     const Text(
-                  //       'Top Rated Freelancers',
-                  //       style: TextStyle(fontWeight: FontWeight.w600),
-                  //     ),
-                  //     ...freelancers
-                  //         .map((f) => FreelancerTile(freelancer: f))
-                  //         .toList(),
-                  //   ],
-                  // ),
+                  const SizedBox(height: 14),
                 ],
               ),
             ),

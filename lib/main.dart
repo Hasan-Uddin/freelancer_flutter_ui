@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:freelancer_flutter_ui/data/api_services/frelancers_api.dart';
 import 'package:freelancer_flutter_ui/domain/providers/freelancer_provider.dart';
 import 'package:freelancer_flutter_ui/domain/providers/popular_services_provider.dart';
-import 'package:freelancer_flutter_ui/presentation/widgets/freelancers_tile.dart';
+import 'package:freelancer_flutter_ui/presentation/widgets/freelancer_tile.dart';
 import 'package:provider/provider.dart';
 import 'core/themes/app_theme.dart';
 import 'presentation/screens/home_screen.dart';

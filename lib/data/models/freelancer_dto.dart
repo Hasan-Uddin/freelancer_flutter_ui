@@ -1,6 +1,6 @@
 class FreelancerData {
-  final int id;
-  final String name;
+  final int? id;
+  final String? name;
   final String? title;
   final String? imageUrl;
   final Location? location;
