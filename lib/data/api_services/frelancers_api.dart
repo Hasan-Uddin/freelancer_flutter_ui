@@ -1,23 +1,34 @@
 import 'dart:convert';
 import 'package:freelancer_flutter_ui/data/models/freelancer_dto.dart';
+import 'package:freelancer_flutter_ui/data/models/service_dto.dart';
 import 'package:http/http.dart' as http;
 
 class FreelancerApiService {
-  final String baseUrl =
+  // base url
+  final String _baseUrl =
       'https://xilancer.xgenious.com/api/v1/freelancers/list';
-  //https://xilancer.xgenious.com/api/v1/freelancers/list?/page=1
-  Future<List<FreelancerData>> fetchFreelancers({int page = 1}) async {
-    final response = await http.get(Uri.parse('$baseUrl?/page=$page'));
+
+  Future<List<FreelancerData>> fetchData() async {
     try {
+      final response = await http.get(Uri.parse(_baseUrl));
+
       if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonData = json.decode(response.body);
-        return (jsonData['data'] as List)
-            .map((item) => FreelancerData.fromJson(item))
-            .toList();
+        // Parse the response body as a JSON object
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        // Check if the response has data
+        if (data['success'] == true) {
+          List<dynamic> FreelancerList = data['data'];
+
+          // Convert each project into a Project model and return
+          return FreelancerList.map((e) => FreelancerData.fromJson(e)).toList();
+        } else {
+          throw Exception('Failed to load projects');
+        }
       } else {
-        throw Exception('Failed to fetch freelancers');
+        throw Exception('Failed to load data');
       }
-    } on Exception catch (e) {
+    } catch (e) {
       throw Exception('Error fetching projects: $e');
     }
   }

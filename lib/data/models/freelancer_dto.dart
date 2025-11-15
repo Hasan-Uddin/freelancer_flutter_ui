@@ -3,9 +3,9 @@ class FreelancerData {
   final String name;
   final String? title;
   final String? imageUrl;
-  final Location location;
-  final Statistics statistics;
-  final int hourly_rate;
+  final Location? location;
+  final Statistics? statistics;
+  final int? hourly_rate;
 
   FreelancerData({
     required this.id,

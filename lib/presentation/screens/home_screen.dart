@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:freelancer_flutter_ui/core/utils/responsive.dart';
+import 'package:freelancer_flutter_ui/domain/providers/freelancer_provider.dart';
 import 'package:freelancer_flutter_ui/domain/providers/popular_services_provider.dart';
 import 'package:freelancer_flutter_ui/presentation/widgets/category_tile.dart';
 import 'package:freelancer_flutter_ui/presentation/widgets/job_tile.dart';
@@ -25,12 +26,14 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<PopularServiceProvider>().fetchPopularServices();
+      context.read<FreelancerProvider>().fetchFreelancers();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<PopularServiceProvider>();
+    final popularServiceProvider = context.watch<PopularServiceProvider>();
+    final freelancerProfileProvider = context.watch<FreelancerProvider>();
 
     return Scaffold(
       body: SafeArea(
@@ -207,11 +210,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 372,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
-                      itemCount: provider.servicesData.length,
+                      itemCount: popularServiceProvider.servicesData.length,
                       separatorBuilder: (_, __) => const SizedBox(width: 12),
                       itemBuilder: (context, index) {
                         return PopularServicesTile(
-                          services: provider.servicesData[index],
+                          services: popularServiceProvider.servicesData[index],
                         );
                       },
                     ),
@@ -323,49 +326,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
 
                   const SizedBox(height: 12),
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      return SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: const [
-                            // FreelancersTile(
-                            //   name: 'Esther Howard',
-                            //   profession: 'Flutter Developer',
-                            //   location: 'New York, USA',
-                            //   rating: 4.5,
-                            //   reviewsCount: 125,
-                            //   hourlyRate: 50,
-                            //   profileImageUrl: 'assets/images/avatar.png',
-                            //   skills: ["Flutter", "Dart", "Firebase"],
-                            //   isPro: true,
-                            // ),
-                            // FreelancersTile(
-                            //   name: 'Esther Howard',
-                            //   profession: 'Flutter Developer',
-                            //   location: 'New York, USA',
-                            //   rating: 4.5,
-                            //   reviewsCount: 125,
-                            //   hourlyRate: 50,
-                            //   profileImageUrl: 'assets/images/avatar.png',
-                            //   skills: ["Flutter", "Dart", "Firebase"],
-                            //   isPro: true,
-                            // ),
-                            // FreelancersTile(
-                            //   name: 'Esther Howard',
-                            //   profession: 'Flutter Developer',
-                            //   location: 'New York, USA',
-                            //   rating: 4.5,
-                            //   reviewsCount: 125,
-                            //   hourlyRate: 50,
-                            //   profileImageUrl: 'assets/images/avatar.png',
-                            //   skills: ["Flutter", "Dart", "Firebase"],
-                            //   isPro: true,
-                            // ),
-                          ],
-                        ),
-                      );
-                    },
+                  SizedBox(
+                    height: 217,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: freelancerProfileProvider.freelancers.length,
+                      separatorBuilder: (_, __) => const SizedBox(width: 12),
+                      itemBuilder: (context, index) {
+                        return FreelancersTile(
+                          isPro: true,
+                          freelancer:
+                              freelancerProfileProvider.freelancers[index],
+                        );
+                      },
+                    ),
                   ),
 
                   const SizedBox(height: 12),

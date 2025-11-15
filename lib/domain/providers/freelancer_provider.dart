@@ -14,32 +14,30 @@ class FreelancerProvider extends ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  int _currentPage = 1;
-  int get currentPage => _currentPage;
+  FreelancerProvider() {
+    print("Provider initialized >>");
+    fetchFreelancers();
+  }
 
-  Future<void> fetchFreelancers({int page = 1}) async {
+  Future<void> fetchFreelancers() async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
-      final data = await apiService.fetchFreelancers(page: page);
+      final data = await apiService.fetchData();
+
       print('Fetched ${data.length} freelancers');
-      if (page == 1) {
-        _freelancers = data;
-      } else {
-        _freelancers.addAll(data);
-      }
-      _currentPage = page;
+
+      _freelancers = data;
     } catch (e) {
-      _errorMessage = e.toString();
+      _errorMessage = e.toString(); // store error only
+      print("Error: $_errorMessage");
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
 
-  void refresh() {
-    fetchFreelancers(page: 1);
-  }
+  void refresh() => fetchFreelancers();
 }

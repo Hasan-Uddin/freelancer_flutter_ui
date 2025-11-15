@@ -36,35 +36,15 @@ class _FreelancerAppState extends State<FreelancerApp> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PopularServiceProvider>().fetchPopularServices();
-      context.read<FreelancerProvider>().fetchFreelancers();
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<FreelancerProvider>();
     return MaterialApp(
       title: 'Freelance Scaffold',
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      home: Material(
-        child: SizedBox(
-          height: 372,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: provider.freelancers.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
-            itemBuilder: (context, index) {
-              return FreelancersTile(
-                isPro: true,
-                freelancer: provider.freelancers[index],
-              );
-            },
-          ),
-        ),
-      ),
+      home: Material(child: HomeScreen()),
     );
   }
 }
