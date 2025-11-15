@@ -5,7 +5,7 @@ import '../../core/constants.dart';
 
 class PopularServicesTile extends StatelessWidget {
   //final ServiceModel service;
-  final PopularServices services;
+  final PopularServicesData services;
   const PopularServicesTile({super.key, required this.services});
 
   @override

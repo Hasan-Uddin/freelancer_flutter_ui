@@ -5,8 +5,8 @@ import 'package:freelancer_flutter_ui/data/models/service_dto.dart';
 class PopularServiceProvider with ChangeNotifier {
   final PopularServiceApi _apiService = PopularServiceApi();
 
-  List<PopularServices> _servicesData = [];
-  List<PopularServices> get servicesData => _servicesData;
+  List<PopularServicesData> _servicesData = [];
+  List<PopularServicesData> get servicesData => _servicesData;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -15,7 +15,7 @@ class PopularServiceProvider with ChangeNotifier {
   String? get error => _error;
 
   /// Load projects
-  Future<void> loadPopularServices() async {
+  Future<void> fetchPopularServices() async {
     _isLoading = true;
     _error = null;
     notifyListeners();
