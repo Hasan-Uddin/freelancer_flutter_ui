@@ -329,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.inbox), label: 'Inbox'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Inbox'),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
           BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'More'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
