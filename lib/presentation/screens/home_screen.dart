@@ -327,14 +327,66 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _currentIndex,
         onTap: (i) => setState(() => _currentIndex = i),
         type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Inbox'),
+        items: [
+          navItem("assets/icons/nav_home.svg", "Home", context),
+          navItem("assets/icons/nav_inbox.svg", "Inbox", context),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'More'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          navItem("assets/icons/nav_more.svg", "More", context),
+          BottomNavigationBarItem(
+            icon: logicalProfileIcon(),
+            label: 'Profile',
+            activeIcon: logicalProfileIcon(active: true),
+          ),
         ],
       ),
     );
   }
+
+  Stack logicalProfileIcon({bool active = false}) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        SvgPicture.asset(
+          "assets/icons/nav_person.svg",
+
+          colorFilter: (active)
+              ? ColorFilter.mode(
+                  Theme.of(context).colorScheme.primary,
+                  BlendMode.srcIn,
+                )
+              : null,
+        ),
+        if (true) // logical profile notification
+          Positioned(
+            top: -4,
+            right: -4,
+            child: Container(
+              width: 6,
+              height: 6,
+              decoration: const BoxDecoration(
+                color: Colors.redAccent,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  BottomNavigationBarItem navItem(
+    String svgPath,
+    String label,
+    BuildContext context,
+  ) => BottomNavigationBarItem(
+    icon: SvgPicture.asset(svgPath),
+    label: label,
+
+    activeIcon: SvgPicture.asset(
+      svgPath,
+      colorFilter: ColorFilter.mode(
+        Theme.of(context).colorScheme.primary,
+        BlendMode.srcIn,
+      ),
+    ),
+  );
 }
